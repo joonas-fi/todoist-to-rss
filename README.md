@@ -1,9 +1,9 @@
-Todoist doesn't offer task export in RSS format. This program fixes that.
+[Todoist](todoist.com/) doesn't offer task export in RSS format. This program fixes that.
 
-This runs can either run as local HTTP endpoint or as AWS Lambda microservice.
+This can either run as a local HTTP endpoint or as AWS Lambda function.
 
-I wanted to
-[display my Todoist tasks as native Markdown panel in Home Assistant](https://joonas.fi/2020/08/displaying-rss-feed-with-home-assistant/)
+I wanted to display my Todoist tasks as
+[native Markdown panel in Home Assistant](https://joonas.fi/2020/08/displaying-rss-feed-with-home-assistant/)
 (the blog post guides to how you can push RSS to Home Assistant)
 
 ![](docs/todoist-in-home-assistant.png)

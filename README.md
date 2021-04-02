@@ -26,6 +26,6 @@ RSS feed location
 -----------------
 
 Once the HTTP service is running, your RSS feeds are available at
-`/api/todoist-to-rss/project/{project}/tasks.xml?token={api_token}`.
+`/todoist-to-rss/api/project/{project}/tasks.xml?token={api_token}`.
 
 You can find Todoist project ID from URL in Todoist browser app.

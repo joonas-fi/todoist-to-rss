@@ -38,7 +38,7 @@ func logic(ctx context.Context) error {
 func makeHandler() http.Handler {
 	routes := mux.NewRouter()
 
-	routes.HandleFunc("/api/todoist-to-rss/project/{project}/tasks.xml", func(w http.ResponseWriter, r *http.Request) {
+	routes.HandleFunc("/todoist-to-rss/api/project/{project}/tasks.xml", func(w http.ResponseWriter, r *http.Request) {
 		projectId, err := func() (int64, error) {
 			num, err := strconv.Atoi(mux.Vars(r)["project"])
 			return int64(num), err

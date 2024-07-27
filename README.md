@@ -1,3 +1,5 @@
+⬆️ For table of contents, click the above icon
+
 [Todoist](todoist.com/) doesn't offer task export in RSS format. This program fixes that.
 
 This can either run as a local HTTP endpoint or as AWS Lambda function.

@@ -22,6 +22,8 @@ type Task struct {
 	Created   time.Time `json:"created_at"`
 	Url       string    `json:"url"`
 	Due       *DueSpec  `json:"due"` // only present for ones that have due date
+
+	ProjectID string `json:"project_id"`
 }
 
 // returns 0 if no due date
@@ -103,4 +105,17 @@ func (t *Todoist) TasksByProject(ctx context.Context, id int64, now time.Time) (
 	})
 
 	return tasks, nil
+}
+
+func (t *Todoist) CreateTask(ctx context.Context, task Task) error {
+	if _, err := ezhttp.Post(
+		ctx,
+		"https://api.todoist.com/rest/v2/tasks",
+		ezhttp.AuthBearer(t.token),
+		ezhttp.SendJSON(task),
+	); err != nil {
+		return fmt.Errorf("CreateTask: %w", err)
+	}
+
+	return nil
 }

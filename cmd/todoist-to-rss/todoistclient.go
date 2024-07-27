@@ -51,25 +51,28 @@ type Todoist struct {
 func (t *Todoist) Project(ctx context.Context, id int64) (*Project, error) {
 	project := &Project{}
 
-	_, err := ezhttp.Get(
+	if _, err := ezhttp.Get(
 		ctx,
 		fmt.Sprintf("https://api.todoist.com/rest/v1/projects/%d", id),
 		ezhttp.AuthBearer(t.token),
-		ezhttp.RespondsJSONAllowUnknownFields(project))
+		ezhttp.RespondsJSONAllowUnknownFields(project),
+	); err != nil {
+		return nil, fmt.Errorf("Project: %w", err)
+	}
 
-	return project, err
+	return project, nil
 }
 
 func (t *Todoist) TasksByProject(ctx context.Context, id int64, now time.Time) ([]Task, error) {
 	tasks := []Task{}
 
-	_, err := ezhttp.Get(
+	if _, err := ezhttp.Get(
 		ctx,
 		fmt.Sprintf("https://api.todoist.com/rest/v1/tasks?project_id=%d", id),
 		ezhttp.AuthBearer(t.token),
-		ezhttp.RespondsJSONAllowUnknownFields(&tasks))
-	if err != nil {
-		return nil, err
+		ezhttp.RespondsJSONAllowUnknownFields(&tasks),
+	); err != nil {
+		return nil, fmt.Errorf("TasksByProject: %w", err)
 	}
 
 	// REST API has no sensible ordering, so we have to sort them.

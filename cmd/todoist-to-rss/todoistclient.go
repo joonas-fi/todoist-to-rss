@@ -15,11 +15,11 @@ type Project struct {
 }
 
 type Task struct {
-	Id        int64     `json:"id"`
+	Id        string    `json:"id"`
 	Order     int       `json:"order"` // order within this project
 	Content   string    `json:"content"`
-	Completed bool      `json:"completed"`
-	Created   time.Time `json:"created"`
+	Completed bool      `json:"is_completed"`
+	Created   time.Time `json:"created_at"`
 	Url       string    `json:"url"`
 	Due       *DueSpec  `json:"due"` // only present for ones that have due date
 }
@@ -35,7 +35,7 @@ func (t Task) OverdueAmount(now time.Time) time.Duration {
 }
 
 type DueSpec struct {
-	Recurring bool          `json:"recurring"`
+	Recurring bool          `json:"is_recurring"`
 	Date      JSONPlainDate `json:"date"` // looks like: 2021-01-15
 }
 
@@ -53,7 +53,7 @@ func (t *Todoist) Project(ctx context.Context, id int64) (*Project, error) {
 
 	if _, err := ezhttp.Get(
 		ctx,
-		fmt.Sprintf("https://api.todoist.com/rest/v1/projects/%d", id),
+		fmt.Sprintf("https://api.todoist.com/rest/v2/projects/%d", id),
 		ezhttp.AuthBearer(t.token),
 		ezhttp.RespondsJSONAllowUnknownFields(project),
 	); err != nil {
@@ -68,7 +68,7 @@ func (t *Todoist) TasksByProject(ctx context.Context, id int64, now time.Time) (
 
 	if _, err := ezhttp.Get(
 		ctx,
-		fmt.Sprintf("https://api.todoist.com/rest/v1/tasks?project_id=%d", id),
+		fmt.Sprintf("https://api.todoist.com/rest/v2/tasks?project_id=%d", id),
 		ezhttp.AuthBearer(t.token),
 		ezhttp.RespondsJSONAllowUnknownFields(&tasks),
 	); err != nil {

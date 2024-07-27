@@ -100,8 +100,13 @@ func tasksToRSS(tasks []Task, project Project, now time.Time) *feeds.Feed {
 			}
 		}()
 
+		idInt, err := strconv.ParseInt(task.Id, 10, 64)
+		if err != nil {
+			panic(err)
+		}
+
 		rssItems = append(rssItems, &feeds.Item{
-			Id: intToGuid(task.Id),
+			Id: intToGuid(idInt),
 			Title: func() string {
 				if task.Completed {
 					return fmt.Sprintf("✅ %s", titleWithAlarm)

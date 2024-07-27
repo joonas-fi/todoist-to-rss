@@ -55,7 +55,7 @@ func (t *Todoist) Project(ctx context.Context, id int64) (*Project, error) {
 		ctx,
 		fmt.Sprintf("https://api.todoist.com/rest/v1/projects/%d", id),
 		ezhttp.AuthBearer(t.token),
-		ezhttp.RespondsJson(project, true))
+		ezhttp.RespondsJSONAllowUnknownFields(project))
 
 	return project, err
 }
@@ -67,7 +67,7 @@ func (t *Todoist) TasksByProject(ctx context.Context, id int64, now time.Time) (
 		ctx,
 		fmt.Sprintf("https://api.todoist.com/rest/v1/tasks?project_id=%d", id),
 		ezhttp.AuthBearer(t.token),
-		ezhttp.RespondsJson(&tasks, true))
+		ezhttp.RespondsJSONAllowUnknownFields(&tasks))
 	if err != nil {
 		return nil, err
 	}

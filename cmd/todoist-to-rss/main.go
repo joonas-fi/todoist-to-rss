@@ -30,9 +30,11 @@ func logic(ctx context.Context) error {
 	srv := &http.Server{
 		Addr:    ":80",
 		Handler: makeHandler(),
+
+		ReadHeaderTimeout: httputils.DefaultReadHeaderTimeout,
 	}
 
-	return httputils.CancelableServer(ctx, srv, func() error { return srv.ListenAndServe() })
+	return httputils.CancelableServer(ctx, srv, srv.ListenAndServe)
 }
 
 func makeHandler() http.Handler {

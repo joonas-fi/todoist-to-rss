@@ -1,4 +1,4 @@
-package main
+package todoist
 
 import (
 	"context"
@@ -46,11 +46,15 @@ func (d DueSpec) Overdue(now time.Time) time.Duration {
 	return now.Sub(d.Date.Time)
 }
 
-type Todoist struct {
+func NewClient(token string) *Client {
+	return &Client{token}
+}
+
+type Client struct {
 	token string
 }
 
-func (t *Todoist) Project(ctx context.Context, id int64) (*Project, error) {
+func (t *Client) Project(ctx context.Context, id int64) (*Project, error) {
 	project := &Project{}
 
 	if _, err := ezhttp.Get(
@@ -65,7 +69,7 @@ func (t *Todoist) Project(ctx context.Context, id int64) (*Project, error) {
 	return project, nil
 }
 
-func (t *Todoist) TasksByProject(ctx context.Context, id int64, now time.Time) ([]Task, error) {
+func (t *Client) TasksByProject(ctx context.Context, id int64, now time.Time) ([]Task, error) {
 	tasks := []Task{}
 
 	if _, err := ezhttp.Get(
@@ -107,7 +111,7 @@ func (t *Todoist) TasksByProject(ctx context.Context, id int64, now time.Time) (
 	return tasks, nil
 }
 
-func (t *Todoist) CreateTask(ctx context.Context, task Task) error {
+func (t *Client) CreateTask(ctx context.Context, task Task) error {
 	if _, err := ezhttp.Post(
 		ctx,
 		"https://api.todoist.com/rest/v2/tasks",

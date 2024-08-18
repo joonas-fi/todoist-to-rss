@@ -13,6 +13,7 @@ import (
 	"github.com/function61/gokit/os/osutil"
 	"github.com/gorilla/feeds"
 	"github.com/gorilla/mux"
+	"github.com/joonas-fi/todoist-to-rss/pkg/todoist"
 )
 
 func main() {
@@ -56,7 +57,7 @@ func makeHandler() http.Handler {
 			return
 		}
 
-		todoistForUser := Todoist{token}
+		todoistForUser := todoist.NewClient(token)
 
 		// need to fetch project metadata for naming RSS feed
 		project, err := todoistForUser.Project(r.Context(), projectId)
@@ -86,7 +87,7 @@ func makeHandler() http.Handler {
 	return routes
 }
 
-func tasksToRSS(tasks []Task, project Project, now time.Time) *feeds.Feed {
+func tasksToRSS(tasks []todoist.Task, project todoist.Project, now time.Time) *feeds.Feed {
 	rssItems := []*feeds.Item{}
 
 	for _, task := range tasks {
